@@ -1,0 +1,75 @@
+package com.cook;
+
+import com.cook.bean.BitmapAndBytes;
+import com.cook.bean.Dishes;
+import com.cook.bean.User;
+import com.cook.db.dao.CollectDao;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class DishesDetailActivity extends Activity {
+
+	private ImageView imageview_dishesImage;
+	private TextView textview_dishesName;
+	private TextView textview_dishesIngredient;
+	private TextView textview_dishesWay;
+	private ImageButton imagebutton_collect;
+	CollectDao collectdao;
+	
+	private Dishes dishes;
+	private User user=nll;
+	private boolean isCollected=false;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_dishes_detail);
+		
+		imageview_dishesImage=(ImageView)findViewById(R.id.imageview_dishesImage);
+		textview_dishesName=(TextView)findViewById(R.id.textview_dishesName);
+		textview_dishesIngredient=(TextView)findViewById(R.id.textview_dishesIngredient);
+		textview_dishesWay=(TextView)findViewById(R.id.textview_dishesWay);
+		imagebutton_collect=(ImageButton)findViewById(R.id.imagebutton_collect);
+		
+        Intent intent=getIntent();
+        dishes=(Dishes)intent.getSerializableExtra("dishes");
+
+        Bitmap bm=BitmapAndBytes.Bytes2Bitmap(dishes.getDishesImage());
+		imageview_dishesImage.setImageBitmap(bm);
+		textview_dishesName.setText(dishes.getDishesName());
+		textview_dishesIngredient.setText(dishes.getDishesMaterial());
+		textview_dishesWay.setText(dishes.getDishesWay().replace("****", "\r\n"));
+		
+		imagebutton_collect.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				if(!isCollected) {
+					if(LoginActivity.loginUserList.size()==0){
+						Toast.makeText(DishesDetailActivity.this, "请先登录！", Toast.LENGTH_SHORT).show();
+					}
+					else{
+						user = LoginActivity.loginUserList.get(0);
+						collectdao = new CollectDao(DishesDetailActivity.this);
+						collectdao.addCollection(user, dishes);
+						imagebutton_collect.setImageResource(R.drawable.icon_collect_done);
+						isCollected=!isCollected;
+					}
+				}
+				else {
+					collectdao.deleteCollection(user, dishes);
+					imagebutton_collect.setImageResource(R.drawable.icon_collect_normal);
+					isCollected=!isCollected;
+				}
+			}
+		});
+	}
+}

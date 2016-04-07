@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/pic4dish"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/name4dish"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/pic4dish"
+        android:hint="菜品名"
+        android:textColor="#ee2c2c"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/info4dish"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/name4dish"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/pic4dish"
+        android:hint="菜品简介"
+        android:textColor="#ee2c2c"
+        android:textSize="20sp" />
+    
+</RelativeLayout>

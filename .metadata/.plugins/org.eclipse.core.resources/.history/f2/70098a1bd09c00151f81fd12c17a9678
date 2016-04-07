@@ -1,0 +1,80 @@
+package com.cook.adapter;
+
+import java.util.List;
+
+import com.cook.bean.BitmapAndBytes;
+import com.cook.bean.Dishes;
+import com.cook.db.dao.CollectDao;
+import com.cook.db.dao.DishesDao;
+import com.cook.R;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class ListViewAdapter_CollectionActivity extends BaseAdapter {
+
+	private List<Dishes> listDishes;
+	private Context context;
+
+	public ListViewAdapter_CollectionActivity(List<Dishes> listDish, Context context) {
+		this.listDishes=listDish;
+		this.context = context;
+	}
+
+	@Override
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return listDishes.size();
+	}
+
+	@Override
+	public Dishes getItem(int position) {
+		// TODO Auto-generated method stub
+		return listDishes.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		ViewHolder1 holder = null;
+		View view = null;
+		if (convertView == null) {
+			view = View.inflate(context, R.layout.list_item, null);
+			holder = new ViewHolder1();
+			holder.textview1 = (TextView) view.findViewById(R.id.textview_dishesName);
+			holder.imageview = (ImageView) view.findViewById(R.id.imageview_dishesImage);
+			holder.textview2 = (TextView) view.findViewById(R.id.textview_dishesIntroduce);
+			view.setTag(holder);
+		} else {
+			view = convertView;
+
+		}
+		holder = (ViewHolder1) view.getTag();
+		holder.textview1.setText(listDishes.get(position).getDishesName());
+		holder.textview2.setText(listDishes.get(position).getDishesIntroduce());
+		holder.imageview.setImageBitmap(BitmapAndBytes.Bytes2Bitmap(listDishes.get(position).getDishesImage()));
+		return view;
+	}
+
+	public void remove(User user,Dishes dishes,Context context) {
+		CollectDao cd=new CollectDao(context);
+		cd.deleteCollection(user, dishes);
+		listDishes.remove(dishes);
+	}
+
+}
+
+class ViewHolder1 {
+	public TextView textview1;
+	public TextView textview2;
+	public ImageView imageview;
+}

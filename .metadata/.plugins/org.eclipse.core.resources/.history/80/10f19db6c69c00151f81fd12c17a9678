@@ -1,0 +1,22 @@
+package com.cook;
+
+import com.cook.bean.BitmapAndBytes;
+import com.cook.db.dao.DishesDao;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.ImageView;
+
+public class TestActivity extends Activity {
+
+	private ImageView image;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_test);
+		
+		image = (ImageView) findViewById(R.id.imageview);
+		DishesDao dao = new DishesDao(TestActivity.this);
+		image.setImageBitmap(BitmapAndBytes.Bytes2Bitmap(dao.FindDishesByID("1").getDishesImage()));
+	}
+}

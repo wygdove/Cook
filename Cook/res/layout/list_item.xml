@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+	
+	<ImageView 
+	    android:id="@+id/imageview_dishesImage"
+	    android:layout_width="60dp"
+	    android:layout_height="60dp"
+	    android:layout_marginLeft="2dp"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/cook"
+	    />
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="60dp"
+	    android:orientation="vertical"
+	    >
+		<TextView 
+		    android:id="@+id/textview_dishesName"
+		    android:layout_width="160dp"
+		    android:layout_height="38dp"
+		    android:textSize="20sp"
+		    android:text="dishes"
+		    android:singleLine="true"
+		    android:ellipsize="end"
+		    android:layout_marginLeft="5dp"
+		    android:gravity="center_vertical"
+		    />
+		<TextView 
+		    android:id="@+id/textview_dishesIntroduce"
+		    android:layout_width="match_parent"
+		    android:layout_height="20dp"
+		    android:textSize="16dp"
+		    android:textColor="#bebebe"
+		    android:text="dises introduce"
+		    android:singleLine="true"
+		    android:ellipsize="end"
+		    android:layout_marginLeft="20dp"
+		    android:gravity="center_vertical"
+		    />
+	</LinearLayout>
+
+</LinearLayout>

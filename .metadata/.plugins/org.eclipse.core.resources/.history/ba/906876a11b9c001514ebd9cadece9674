@@ -1,0 +1,16 @@
+package com.cook;
+
+import com.cook.bean.User;
+
+public class Current {
+	private static User user;
+
+	public static User getUser() {
+		return user;
+	}
+
+	public static void setUser(User user) {
+		Current.user = user;
+	}
+
+}

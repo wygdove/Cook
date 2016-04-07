@@ -1,0 +1,96 @@
+package com.cook;
+
+import java.util.List;
+
+import com.cook.adapter.ListViewAdapter_CollectionActivity;
+import com.cook.bean.Dishes;
+import com.cook.bean.User;
+import com.cook.db.dao.CollectDao;
+import com.cook.db.dao.DishesDao;
+import com.cook.mymultichecklistview.SlideCutListView;
+import com.cook.mymultichecklistview.SlideCutListView.RemoveDirection;
+import com.cook.mymultichecklistview.SlideCutListView.RemoveListener;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
+
+public class CollectionActivity extends Activity implements RemoveListener {
+
+	private SlideCutListView slideCutListView;
+	private ListViewAdapter_CollectionActivity adapter;
+	private List<Dishes> list_dishes;
+	
+	private DishesDao dishesdao;
+	private CollectDao collectdao;
+    private User user=null;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_collection);
+		
+		if(Current.isHadUser()) {
+			user=Current.getUser();
+			init();
+		}
+	}
+
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		if(Current.isHadUser()) {
+			user=Current.getUser();
+			init();
+		}
+		else startActivity(new Intent(CollectionActivity.this,MainActivity.class));
+	}
+	
+	private void init() {
+		slideCutListView = (SlideCutListView) findViewById(R.id.slideCutListView);
+		slideCutListView.setRemoveListener(CollectionActivity.this);
+		collectdao = new CollectDao(CollectionActivity.this);
+		dishesdao = new DishesDao(this);
+		
+		list_dishes=collectdao.showCollection(user);
+		adapter = new ListViewAdapter_CollectionActivity(list_dishes, this);
+		slideCutListView.setAdapter(adapter);
+		if(list_dishes.size()>0) {
+			slideCutListView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					Intent intent = new Intent(CollectionActivity.this, DishesDetailActivity.class);
+					intent.putExtra("index", position);
+					startActivity(intent);
+				}
+			});
+		}
+		else {
+			Toast.makeText(CollectionActivity.this, "还没有收藏的物品哦", Toast.LENGTH_SHORT).show();
+			startActivity(new Intent(CollectionActivity.this,MainActivity.class));
+		}
+		
+		slideCutListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+              Intent intent = new Intent(CollectionActivity.this,DishesDetailActivity.class);
+              Dishes dishes=new Dishes();
+              dishes=list_dishes.get(position);
+              intent.putExtra("dishes", dishes);
+              startActivity(intent);
+			}
+		});
+	}
+
+	// 滑动删除之后的回调方法
+	@Override
+	public void removeItem(RemoveDirection direction, int position) {
+		adapter.remove(user,list_dishes.get(position),CollectionActivity.this);
+		adapter.notifyDataSetChanged();
+
+	}
+}

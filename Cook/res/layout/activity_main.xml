@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tx="http://schemas.android.com/apk/res/com.cook"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/id_viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" 
+        >
+    </android.support.v4.view.ViewPager>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:padding="10dp"
+        android:background="@drawable/tabbg"
+        android:orientation="horizontal" 
+        >
+        
+        <com.cook.ChangeColorIconWithTextView
+            android:id="@+id/id_indicator_one"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            tx:icon="@drawable/icon_home_normal"
+            tx:text=""
+            tx:text_size="12sp" />
+        <com.cook.ChangeColorIconWithTextView
+            android:id="@+id/id_indicator_two"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            tx:icon="@drawable/icon_search_normal"
+            tx:text=""
+            tx:text_size="12sp" />
+        <com.cook.ChangeColorIconWithTextView
+            android:id="@+id/id_indicator_three"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            tx:icon="@drawable/icon_my_normal"
+            tx:text=""
+            tx:text_size="12sp" />
+    </LinearLayout>
+
+</LinearLayout>

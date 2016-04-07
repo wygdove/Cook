@@ -1,0 +1,30 @@
+package com.cook;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.RatingBar;
+import android.widget.RatingBar.OnRatingBarChangeListener;
+import android.widget.Toast;
+
+public class ScoreActivity extends Activity{
+
+	private RatingBar ratingBar;
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_score);
+
+		ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+	    ratingBar.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
+			
+			@Override
+			public void onRatingChanged(RatingBar ratingBar, float rating,
+					boolean fromUser) {
+				// TODO Auto-generated method stub
+				float score = ratingBar.getRating();
+				String sco = "您的评分为"+Float.toString(score)+",感谢您的评价";
+				Toast.makeText(ScoreActivity.this, sco, Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+
+}

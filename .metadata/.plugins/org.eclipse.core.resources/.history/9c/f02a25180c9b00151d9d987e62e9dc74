@@ -1,0 +1,5 @@
+package com.cook.bean;
+
+public class DishesGetBitmap {
+
+}

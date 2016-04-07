@@ -1,0 +1,7 @@
+package com.cook;
+
+import android.app.Application;
+
+public class AgentApplication extends Application  {
+
+}

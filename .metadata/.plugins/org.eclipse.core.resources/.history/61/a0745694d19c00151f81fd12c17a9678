@@ -1,0 +1,37 @@
+package com.cook;
+
+import com.cook.bean.User;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
+
+public class SystemSetActivity extends Activity {
+
+	private ListView listview_set;
+	
+    private String[] beauties={"修改密码","退出登录"};
+	
+	private User user=null;
+	
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_system_set);
+
+		listview_set=(ListView) findViewById(R.id.listview_set);
+		listview_set.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+				
+			}
+		});
+		
+	}
+
+}

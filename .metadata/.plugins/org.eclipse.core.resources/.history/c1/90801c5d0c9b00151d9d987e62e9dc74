@@ -1,0 +1,20 @@
+package com.cook.utils;
+
+import java.io.ByteArrayOutputStream;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+
+public class PicUtil {
+	
+	public static byte[] img(Context con,int id) {
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    Bitmap bitmap = ((BitmapDrawable)con.getResources().getDrawable(id)).getBitmap();
+	    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+	    return baos.toByteArray();
+	}
+	
+	
+	
+}

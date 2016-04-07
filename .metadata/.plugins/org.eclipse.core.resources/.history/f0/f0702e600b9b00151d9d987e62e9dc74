@@ -1,0 +1,5 @@
+package com.cook.db.dao;
+
+public class BitmapAndBytes {
+
+}

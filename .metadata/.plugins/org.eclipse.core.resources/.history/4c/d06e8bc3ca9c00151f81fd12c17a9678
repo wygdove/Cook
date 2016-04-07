@@ -1,0 +1,92 @@
+package com.cook;
+
+import com.cook.bean.BitmapAndBytes;
+import com.cook.bean.Dishes;
+import com.cook.bean.User;
+import com.cook.db.dao.CollectDao;
+import com.cook.db.dao.DishesDao;
+import com.cook.db.dao.UserDao;
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+import junit.framework.Test;
+
+public class TestActivity extends Activity {
+	
+	private ImageView imageview_dishesImage;
+	private TextView textview_dishesName;
+	private TextView textview_dishesIngredient;
+	private TextView textview_dishesWay;
+	private ImageButton imagebutton_collect;
+	private TextView textview_name;
+	
+	private CollectDao collectdao;
+	private DishesDao dishesdao;
+	private UserDao userdao;
+	private User user;
+	private Dishes dishes;
+	private boolean isCollected=false;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_dishes_detail);
+		
+		imageview_dishesImage=(ImageView)findViewById(R.id.imageview_dishesImage);
+		textview_dishesName=(TextView)findViewById(R.id.textview_dishesName);
+		textview_dishesIngredient=(TextView)findViewById(R.id.textview_dishesIngredient);
+		textview_dishesWay=(TextView)findViewById(R.id.textview_dishesWay);
+		imagebutton_collect=(ImageButton)findViewById(R.id.imagebutton_collect);
+		
+		collectdao=new CollectDao(TestActivity.this);
+		dishesdao=new DishesDao(TestActivity.this);
+		userdao=new UserDao(TestActivity.this);
+		
+		 user=new User("2","user","user");
+		userdao.addUser(user);
+		 dishes=new Dishes();
+		dishes=dishesdao.FindDishesByID("1");
+		collectdao.addCollection(user, dishes);
+		isCollected=collectdao.isCollected(user,dishes);
+	
+		Bitmap bm=BitmapAndBytes.Bytes2Bitmap(dishes.getDishesImage());
+		imageview_dishesImage.setImageBitmap(bm);
+		textview_dishesName.setText(dishes.getDishesName());
+		textview_dishesIngredient.setText(dishes.getDishesMaterial());
+		textview_dishesWay.setText(dishes.getDishesWay().replace("****", "\r\n"));
+		if(!isCollected) {
+			imagebutton_collect.setImageResource(R.drawable.icon_collect_done);
+		}
+		else {
+			imagebutton_collect.setImageResource(R.drawable.icon_collect_normal);
+		}
+	
+		imagebutton_collect.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if(!Current.isHadUser()) {
+					Toast.makeText(TestActivity.this, "收藏失败，没有登录用户", Toast.LENGTH_SHORT).show();
+				}
+				else {
+					if(!isCollected) {
+						collectdao.addCollection(user, dishes);
+						imagebutton_collect.setImageResource(R.drawable.icon_collect_done);
+						isCollected=!isCollected;
+					}
+					else {
+						collectdao.deleteCollection(user, dishes);
+						imagebutton_collect.setImageResource(R.drawable.icon_collect_normal);
+						isCollected=!isCollected;
+					}
+				}
+			}
+		});
+	}

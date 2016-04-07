@@ -1,0 +1,276 @@
+package com.cook;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import com.cook.R;
+import com.cook.IndexFragment.MyViewPagerAdapter;
+import com.cook.IndexFragment.NavigationPageChangeListener;
+import com.cook.adapter.*;
+import com.cook.bean.Dishes;
+import com.cook.db.dao.DishesDao;
+import com.cook.test.TestActivity;
+import com.cook.view.MyListView;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ImageView.ScaleType;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
+
+
+public class IndexFragment extends Fragment {
+
+	private ViewPager viewpager_showDishes;
+	private ViewPagerAdapter adapter_viewpager;
+	private ListView listview_show;
+	private ListViewAdapter_IndexFragment adapter_listview;
+	
+	private static Context context;
+	private DishesDao dishesdao;
+	
+	private Random random=new Random(); 
+	private List<Dishes> list_dishes;
+	private List<ImageView> list_imageview;
+	
+	private ViewPager guidePages;
+	private ScheduledExecutorService scheduledExecutorService;
+	private int currentItem;
+	private ArrayList<View> viewList = new ArrayList<View>();
+	private ImageView[] imageViews;
+	private LinearLayout viewGroup;
+	private View header;
+	private MyListView listview;
+	private ViewGroup mainView;
+	
+//	@Override
+//	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//		View view = inflater.inflate(R.layout.fragment_index, container,false);
+//		context=getActivity();
+//		
+//        viewpager_showDishes=(ViewPager)view.findViewById(R.id.viewpager_showRandomDishes);
+//        listview_show=(ListView)view.findViewById(R.id.listview_showdisheslist);
+//        init();
+//        showViewPager();
+//        showListView();
+//		return view;
+//	}
+//	
+//	private void showViewPager() {
+//    	list_imageview =new ArrayList<ImageView>();
+// 		for(int i=0;i<3;i++) {
+// 	    	int x=random.nextInt(list_dishes.size()-1);
+// 			ImageView imageView=new ImageView(context);
+// 			imageView.setImageBitmap(list_dishes.get(x).getDishesImage());
+// 			imageView.setPadding(5, 3, 5, 3);
+// 			imageView.setScaleType(ScaleType.FIT_XY);
+// 			list_imageview.add(imageView);
+// 		}
+// 		adapter_viewpager=new ViewPagerAdapter(list_imageview);
+// 		viewpager_showDishes.setAdapter(adapter_viewpager);
+//    }
+//    
+//    private void showListView() {
+//    	adapter_listview=new ListViewAdapter_IndexFragment(list_dishes,context);
+//    	listview_show.setAdapter(adapter_listview);
+//    	
+//        listview_show.setOnItemClickListener(new OnItemClickListener() {
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
+//				Intent intent=new Intent(context,DishesDetailActivity.class);
+//				startActivity(intent);
+//			}
+//		});
+//    }
+    
+    /**
+     * viewpager up
+     */
+	private Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			guidePages.setCurrentItem(currentItem);
+		};
+	};
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mainView = (ViewGroup) inflater.inflate(R.layout.fragment_index, container,false);
+		context=getActivity();
+		
+		init();
+		initView();
+		
+		listview.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+              Intent intent = new Intent(context,DishesDetailActivity.class);
+              Dishes dishes=new Dishes();
+              dishes=list_dishes.get(position);
+              intent.putExtra("dishes", dishes);
+              startActivity(intent);;
+			}
+		});
+		
+		return mainView;	
+	}
+	
+	private void init() {
+		dishesdao=new DishesDao(context);
+		list_dishes=new ArrayList<Dishes>();
+		list_dishes=dishesdao.GetAllDishes();
+	}
+	
+	private void initView() {
+		header = LayoutInflater.from(context).inflate(R.layout.viewpage_header, null);
+		guidePages = (ViewPager) header.findViewById(R.id.guidePages);
+		viewGroup = (LinearLayout) header.findViewById(R.id.viewGroup);
+		listview = (MyListView) mainView.findViewById(R.id.mylistview);
+		listview.addHeaderView(header);
+		guidePages.setOnPageChangeListener(new NavigationPageChangeListener());
+		adapter_listview=new ListViewAdapter_IndexFragment(list_dishes,context);
+		listview.setAdapter(adapter_listview);
+		fillGuanggao(3);
+	}
+
+	
+	private void fillGuanggao(int arrayList) {
+		
+		for(int i=0;i<3;i++) {
+ 	    	int x=random.nextInt(list_dishes.size()-1);
+ 			ImageView imageView=new ImageView(context);
+ 			imageView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+ 			imageView.setImageBitmap(list_dishes.get(x).getDishesImage());
+ 			imageView.setPadding(5, 3, 5, 3);
+ 			imageView.setScaleType(ScaleType.FIT_XY);
+ 			viewList.add(imageView);
+ 		}
+		
+		guidePages.setAdapter(new MyViewPagerAdapter(viewList));
+		imageViews = new ImageView[arrayList];
+		for (int i = 0; i < arrayList; i++) {
+			ImageView imageView = new ImageView(context);
+			imageView = new ImageView(context);
+			imageView.setLayoutParams(new LayoutParams(20, 20));
+			imageView.setPadding(5, 0, 5, 0);
+			imageViews[i] = imageView;
+			if (i == 0)
+				imageViews[i].setImageDrawable(getResources().getDrawable(R.drawable.page_focused));
+			else
+				imageViews[i].setImageDrawable(getResources().getDrawable(R.drawable.page_unfocused));
+
+			viewGroup.addView(imageViews[i]);
+		}
+	}
+
+
+	public class MyViewPagerAdapter extends PagerAdapter {
+		private List<View> mListViews;
+
+		public MyViewPagerAdapter(List<View> mListViews) {
+			this.mListViews = mListViews;
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			container.removeView(mListViews.get(position));
+		}
+
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+//			guidePages.removeAllViews();
+			guidePages.removeView(container);
+			(container).addView(mListViews.get(position), 0);
+			return mListViews.get(position);
+		}
+
+		@Override
+		public int getCount() {
+			return mListViews.size();
+		}
+
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == arg1;
+		}
+	}
+
+	// =============================
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		// 用一个定时器 来完成图片切换
+		// Timer 与 ScheduledExecutorService 实现定时器的效果
+		scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+		// 通过定时器 来完成 每2秒钟切换一个图片
+		// 经过指定的时间后，执行所指定的任务
+		// scheduleAtFixedRate(command, initialDelay, period, unit)
+		// command 所要执行的任务
+		// initialDelay 第一次启动时 延迟启动时间
+		// period 每间隔多次时间来重新启动任务
+		// unit 时间单位
+		scheduledExecutorService.scheduleAtFixedRate(new ViewPagerTask(), 1, 2, TimeUnit.SECONDS);
+		super.onStart();
+
+	}
+
+	// 用来完成图片切换的任务
+	private class ViewPagerTask implements Runnable {
+		public void run() {
+			// 实现我们的操作
+			// 改变当前页面
+			currentItem = (currentItem + 1) % imageViews.length;
+			// Handler来实现图片切换
+			handler.obtainMessage().sendToTarget();
+		}
+	}
+
+	@Override
+	public void onStop() {
+		// 停止图片切换
+		scheduledExecutorService.shutdown();
+		super.onStop();
+	}
+
+	class NavigationPageChangeListener implements OnPageChangeListener {
+		
+		public void onPageScrollStateChanged(int arg0) {
+		}
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+		}
+		
+		@Override
+		public void onPageSelected(int arg0) {
+			currentItem = arg0;
+			for (int i = 0; i < imageViews.length; i++) {
+				if (arg0 == i) {
+					imageViews[i].setImageDrawable(getResources().getDrawable(
+							R.drawable.page_focused));
+				} else {
+					imageViews[i].setImageDrawable(getResources().getDrawable(
+							R.drawable.page_unfocused));
+				}
+			}
+		}
+	}
+    
+}

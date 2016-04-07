@@ -1,0 +1,34 @@
+1448955983444	Rename package 'com.wygdove.mymultichecklistview'
+1448958612175	Delete element
+1448958645273	Delete element
+1448958676209	Move compilation unit
+1448961232950	Delete element
+1448962183305	Delete element
+1448962545808	Rename local variable 've'
+1448962702259	Rename local variable 'vt'
+1449054835420	Encapsulate field 'ID'
+1449054840856	Encapsulate field 'name'
+1449054846396	Encapsulate field 'password'
+1449054850385	Encapsulate field 'photoSrc'
+1449141176841	Delete element
+1449141266794	Rename package 'com.cook.dao'
+1449142168259	Rename resource 'activity_collect.xml'
+1449142181741	Rename type 'CollectActivity'
+1449142994974	Rename field 'listDish'
+1449143688064	Rename field 'listDish'
+1449222249463	Rename type 'ListViewAdapter'
+1449222265981	Rename type 'CollectionListViewAdapter'
+1449227177455	Delete element
+1449227185053	Delete element
+1449229768466	Copy file
+1449284958035	Copy compilation unit
+1449286280015	Rename type 'ListViewAdapter_IndexFragment'
+1449290405932	Encapsulate field 'dishesImage'
+1449291140454	Move compilation unit
+1449291195173	Delete element
+1449291310877	Delete element
+1449291479299	Delete elements
+1449291530465	Delete element
+1449291599396	Delete element
+1449291609986	Delete element
+1449292917553	Encapsulate field 'isLogin'

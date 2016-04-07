@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.cook.mymultichecklistview.CheckableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <com.cook.mymultichecklistview.CheckableTextView
+        android:id="@+id/item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dip"
+        android:layout_weight="1"
+        android:paddingLeft="50sp"
+        android:textColor="#dcdcdc"
+        android:textSize="22sp"
+        />
+
+    <com.cook.mymultichecklistview.InertCheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="5dp"
+        android:button="@drawable/checkbox"
+        android:focusable="false"
+        android:maxHeight="40dp"
+        android:maxWidth="40dp"
+        />
+
+</com.cook.mymultichecklistview.CheckableLinearLayout>

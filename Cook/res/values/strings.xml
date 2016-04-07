@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">哥小厨</string>
+    <string name="tab_first">首页</string>
+    <string name="tab_search">搜索</string>
+    <string name="tab_me">我的</string>
+    <string name="title_activity_start">欢迎</string>
+    <string name="title_activity_dishes_detail">美食</string>
+    <string name="action_settings">setting</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_test">测试</string>
+    <string name="title_activity_login">登录/注册</string>
+    <string name="title_activity_system_set">系统设置</string>
+    <string name="title_activity_collection">我的收藏</string>
+    <string name="title_activity_contact_us">联系我们</string>
+    <string name="title_activity_search_result">搜索结果</string>
+    <string name="title_activity_score">软件评分</string>
+
+</resources>
